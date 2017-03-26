@@ -1,0 +1,9 @@
+# Marko compiled files
+*.marko.js
+
+# Node
+/node_modules
+npm-debug.log
+
+# Workspace
+.vscode
