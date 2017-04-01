@@ -1,16 +1,34 @@
 require('marko/node-require')
 
-import koa from 'koa'
-const app = new koa()
+import Koa from 'koa'
+const app = new Koa()
 
-const template = require('./index.marko')
+// x-response-time
+
+app.use(async (ctx, next) => {
+  const start = new Date()
+  await next()
+  const ms = new Date() - start
+  ctx.set('X-Response-Time', `${ms}ms`)
+})
+
+// logger
+
+app.use(async (ctx, next) => {
+  const start = new Date()
+  await next()
+  const ms = new Date() - start
+  console.log(`${ctx.method} ${ctx.url} - ${ms}`)
+})
+
+// Add template
+
+// response
 
 app.use(ctx => {
-  ctx.body = template.stream({
-    name: 'jarvis'
-  })
+  ctx.body = 'Hello World'
 })
 
 app.listen(8080, () => {
-  console.log("Running on port 8080...")
+  console.log('Running on port 8080...')
 })
